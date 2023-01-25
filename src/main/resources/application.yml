@@ -1,0 +1,31 @@
+server:
+  port: 8080
+---
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/reddit-app
+    username: root
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+  mail:
+    host: smtp.mailtrap.io
+    port: 25
+    username: 6fd1df2d529241
+    password: 42e8bbf35601c2
+    protocol: smtp
+---
+rsa:
+  public-key: classpath:certificates/public.pem
+  private-key: classpath:certificates/private.pem
+---
+jwt:
+  expiration:
+    time: 90000
