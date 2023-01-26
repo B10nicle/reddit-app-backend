@@ -24,15 +24,15 @@ import static jakarta.persistence.FetchType.LAZY;
 public class Vote {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Long voteId;
     private VoteType voteType;
     @NotNull
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "postId", referencedColumnName = "postId")
     @ToString.Exclude
     private Post post;
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     @ToString.Exclude
     private User user;
 
@@ -41,7 +41,7 @@ public class Vote {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Vote vote = (Vote) o;
-        return id != null && Objects.equals(id, vote.id);
+        return voteId != null && Objects.equals(voteId, vote.voteId);
     }
 
     @Override
