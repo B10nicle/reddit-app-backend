@@ -29,7 +29,7 @@ public class VerificationToken {
     @OneToOne(fetch = LAZY)
     @ToString.Exclude
     private User user;
-    private Instant expiryDate;
+    private Instant expiryAt;
 
     @Override
     public boolean equals(Object o) {

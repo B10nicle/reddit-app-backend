@@ -19,7 +19,6 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @Setter
 @Entity
-@Builder
 @ToString
 @AllArgsConstructor
 @RequiredArgsConstructor
@@ -34,14 +33,14 @@ public class Post {
     @Lob
     @Nullable
     private String description;
-    private Integer voteCount;
+    private Integer voteCount = 0;
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     @ToString.Exclude
     private User user;
     private Instant createdDate;
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "subredditId", referencedColumnName = "subredditId")
     @ToString.Exclude
     private Subreddit subreddit;
 

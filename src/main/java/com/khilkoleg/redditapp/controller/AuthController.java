@@ -1,10 +1,10 @@
 package com.khilkoleg.redditapp.controller;
 
 import com.khilkoleg.redditapp.dto.AuthenticationResponse;
-import com.khilkoleg.redditapp.dto.LoginRequest;
 import com.khilkoleg.redditapp.dto.RegisterRequest;
 import com.khilkoleg.redditapp.service.AuthService;
 import org.springframework.web.bind.annotation.*;
+import com.khilkoleg.redditapp.dto.LoginRequest;
 import org.springframework.http.ResponseEntity;
 import lombok.AllArgsConstructor;
 
@@ -23,7 +23,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody RegisterRequest registerRequest) {
         authService.signUp(registerRequest);
-        return new ResponseEntity<>("User was successfully registered", OK);
+        return new ResponseEntity<>("User was successfully registered", CREATED);
     }
 
     @GetMapping("accountVerification/{token}")

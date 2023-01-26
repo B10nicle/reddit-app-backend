@@ -9,6 +9,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -19,16 +20,15 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @Setter
 @Entity
-@Builder
 @ToString
+@NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class Subreddit {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Long subredditId;
     @NotBlank(message = "Community name is required")
-    private String name;
+    private String subredditName;
     @NotBlank(message = "Description is required")
     private String description;
     @OneToMany(fetch = LAZY)
@@ -44,7 +44,7 @@ public class Subreddit {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Subreddit subreddit = (Subreddit) o;
-        return id != null && Objects.equals(id, subreddit.id);
+        return subredditId != null && Objects.equals(subredditId, subreddit.subredditId);
     }
 
     @Override

@@ -24,7 +24,7 @@ import static jakarta.persistence.FetchType.LAZY;
 public class Comment {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private Long commentId;
     @NotEmpty
     private String text;
     @ManyToOne(fetch = LAZY)
@@ -42,7 +42,7 @@ public class Comment {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Comment comment = (Comment) o;
-        return id != null && Objects.equals(id, comment.id);
+        return commentId != null && Objects.equals(commentId, comment.commentId);
     }
 
     @Override

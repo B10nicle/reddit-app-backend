@@ -32,10 +32,10 @@ public class MailService {
         };
         try {
             mailSender.send(messagePreparator);
-            log.info("Activation email was sent.");
+            log.info("Email was sent.");
         } catch (MailException e) {
-            log.error("Sending activation email failed.", e);
-            throw new EmailException("Exception occurred when sending an activation email to " + notificationEmail.getRecipient(), e);
+            log.error("Sending email failed.", e);
+            throw new EmailException("Exception occurred when sending an email to " + notificationEmail.getRecipient(), e);
         }
     }
 
