@@ -1,7 +1,7 @@
 package com.khilkoleg.redditapp.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import com.khilkoleg.redditapp.model.User;
 import lombok.AllArgsConstructor;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import static java.time.Instant.*;
@@ -111,5 +110,10 @@ public class AuthService {
                 .getPrincipal();
         return userRepository.findByUsername(principal.getSubject()).orElseThrow(
                 () -> new UsernameNotFoundException("Username not found - " + principal.getSubject()));
+    }
+
+    public boolean isLoggedIn() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
     }
 }

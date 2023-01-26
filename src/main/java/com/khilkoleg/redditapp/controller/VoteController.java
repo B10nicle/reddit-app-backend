@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/votes/")
+@RequestMapping("/api/votes")
 public class VoteController {
     private final VoteService voteService;
 
