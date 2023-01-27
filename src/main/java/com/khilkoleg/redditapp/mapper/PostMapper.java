@@ -28,20 +28,20 @@ public abstract class PostMapper {
     @Autowired
     private AuthService authService;
 
-    @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
-    @Mapping(target = "description", source = "postRequest.description")
-    @Mapping(target = "subreddit", source = "subreddit")
-    @Mapping(target = "voteCount", constant = "0")
     @Mapping(target = "user", source = "user")
+    @Mapping(target = "voteCount", constant = "0")
+    @Mapping(target = "subreddit", source = "subreddit")
+    @Mapping(target = "description", source = "postRequest.description")
+    @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
     public abstract Post map(PostRequest postRequest, Subreddit subreddit, User user);
 
     @Mapping(target = "postId", source = "postId")
-    @Mapping(target = "subredditName", source = "subreddit.subredditName")
     @Mapping(target = "userName", source = "user.username")
-    @Mapping(target = "commentCount", expression = "java(commentCount(post))")
     @Mapping(target = "duration", expression = "java(getDuration(post))")
     @Mapping(target = "upVote", expression = "java(isPostUpVoted(post))")
+    @Mapping(target = "subredditName", source = "subreddit.subredditName")
     @Mapping(target = "downVote", expression = "java(isPostDownVoted(post))")
+    @Mapping(target = "commentCount", expression = "java(commentCount(post))")
     public abstract PostResponse mapToDto(Post post);
 
     Integer commentCount(Post post) {

@@ -1,7 +1,6 @@
 package com.khilkoleg.redditapp.service;
 
 import com.khilkoleg.redditapp.exceptions.SubredditNotFoundException;
-import com.khilkoleg.redditapp.model.User;
 import org.springframework.transaction.annotation.Transactional;
 import com.khilkoleg.redditapp.repository.SubredditRepository;
 import com.khilkoleg.redditapp.mapper.SubredditMapper;

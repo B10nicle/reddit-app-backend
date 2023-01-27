@@ -5,10 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.khilkoleg.redditapp.repository.PostRepository;
 import com.khilkoleg.redditapp.repository.VoteRepository;
 import com.khilkoleg.redditapp.exceptions.VoteException;
+import com.khilkoleg.redditapp.mapper.VoteMapper;
 import org.springframework.stereotype.Service;
 import com.khilkoleg.redditapp.dto.VoteDto;
-import com.khilkoleg.redditapp.model.Post;
-import com.khilkoleg.redditapp.model.Vote;
 import lombok.AllArgsConstructor;
 
 import static com.khilkoleg.redditapp.model.VoteType.UPVOTE;
@@ -23,6 +22,7 @@ public class VoteService {
     private final VoteRepository voteRepository;
     private final PostRepository postRepository;
     private final AuthService authService;
+    private final VoteMapper voteMapper;
 
     @Transactional
     public VoteDto vote(VoteDto voteDto) {
@@ -33,24 +33,16 @@ public class VoteService {
                 voteByPostAndUser.get().getVoteType()
                         .equals(voteDto.getVoteType())) {
             throw new VoteException("You have already "
-                    + voteDto.getVoteType() + "'d for this post");
+                    + voteDto.getVoteType() + "D for this post");
         }
         if (UPVOTE.equals(voteDto.getVoteType())) {
             post.setVoteCount(post.getVoteCount() + 1);
         } else {
             post.setVoteCount(post.getVoteCount() - 1);
         }
-        voteRepository.save(mapToVote(voteDto, post));
+        voteRepository.save(voteMapper.map(voteDto, post, authService.getCurrentUser()));
         postRepository.save(post);
 
         return voteDto;
-    }
-
-    private Vote mapToVote(VoteDto voteDto, Post post) {
-        return Vote.builder()
-                .voteType(voteDto.getVoteType())
-                .post(post)
-                .user(authService.getCurrentUser())
-                .build();
     }
 }
