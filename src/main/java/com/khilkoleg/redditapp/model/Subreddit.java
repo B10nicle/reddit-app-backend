@@ -9,7 +9,6 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.List;
 
-import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -17,9 +16,9 @@ import static jakarta.persistence.FetchType.LAZY;
  * @author Oleg Khilko
  */
 
+@Entity
 @Getter
 @Setter
-@Entity
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor

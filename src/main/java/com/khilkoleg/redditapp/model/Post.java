@@ -16,9 +16,9 @@ import static jakarta.persistence.FetchType.LAZY;
  * @author Oleg Khilko
  */
 
+@Entity
 @Getter
 @Setter
-@Entity
 @ToString
 @AllArgsConstructor
 @RequiredArgsConstructor

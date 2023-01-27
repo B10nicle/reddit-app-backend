@@ -14,6 +14,7 @@ import com.khilkoleg.redditapp.dto.AuthenticationResponse;
 import com.khilkoleg.redditapp.repository.UserRepository;
 import com.khilkoleg.redditapp.model.NotificationEmail;
 import com.khilkoleg.redditapp.model.VerificationToken;
+import com.khilkoleg.redditapp.dto.RefreshTokenRequest;
 import com.khilkoleg.redditapp.security.JwtProvider;
 import org.springframework.security.oauth2.jwt.Jwt;
 import com.khilkoleg.redditapp.dto.RegisterRequest;
@@ -22,9 +23,8 @@ import org.springframework.stereotype.Service;
 import com.khilkoleg.redditapp.model.User;
 import lombok.AllArgsConstructor;
 
-import java.util.UUID;
-
 import static java.time.Instant.*;
+import static java.util.UUID.*;
 
 /**
  * @author Oleg Khilko
@@ -36,6 +36,7 @@ import static java.time.Instant.*;
 public class AuthService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
@@ -61,12 +62,11 @@ public class AuthService {
     }
 
     private String generateVerificationToken(User user) {
-        var token = UUID.randomUUID().toString();
+        var token = randomUUID().toString();
 
         var verificationToken = new VerificationToken();
         verificationToken.setToken(token);
         verificationToken.setUser(user);
-        verificationToken.setExpiryAt(now().plusMillis(50)); //TODO: поправить на авторизацию только в лимите времени
         verificationTokenRepository.save(verificationToken);
 
         return token;
@@ -88,6 +88,7 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    @Transactional
     public AuthenticationResponse login(LoginRequest loginRequest) {
         var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -100,7 +101,12 @@ public class AuthService {
                 .setAuthentication(authentication);
 
         var token = jwtProvider.generateToken(authentication);
-        return new AuthenticationResponse(token, loginRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+                .expiresAt(now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(loginRequest.getUsername())
+                .build();
     }
 
     public User getCurrentUser() {
@@ -115,5 +121,16 @@ public class AuthService {
     public boolean isLoggedIn() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
+    }
+
+    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+        var token = jwtProvider.generateTokenWithUsername(refreshTokenRequest.getUsername());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(refreshTokenRequest.getRefreshToken())
+                .expiresAt(now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(refreshTokenRequest.getUsername())
+                .build();
     }
 }

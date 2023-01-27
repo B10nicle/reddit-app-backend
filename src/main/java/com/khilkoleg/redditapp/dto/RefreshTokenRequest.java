@@ -1,21 +1,19 @@
 package com.khilkoleg.redditapp.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.Data;
-
-import java.time.Instant;
 
 /**
  * @author Oleg Khilko
  */
 
 @Data
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class AuthenticationResponse {
-    private String authenticationToken;
+public class RefreshTokenRequest {
+    @NotBlank
     private String refreshToken;
-    private Instant expiresAt;
     private String username;
 }
