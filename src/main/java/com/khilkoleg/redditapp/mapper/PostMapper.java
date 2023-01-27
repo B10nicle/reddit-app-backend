@@ -31,8 +31,8 @@ public abstract class PostMapper {
     @Mapping(target = "user", source = "user")
     @Mapping(target = "voteCount", constant = "0")
     @Mapping(target = "subreddit", source = "subreddit")
-    @Mapping(target = "description", source = "postRequest.description")
     @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
+    @Mapping(target = "description", expression = "java(postRequest.getDescription())")
     public abstract Post map(PostRequest postRequest, Subreddit subreddit, User user);
 
     @Mapping(target = "postId", source = "postId")
