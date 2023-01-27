@@ -42,14 +42,13 @@ public class WebSecurityConfig {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**")
-                        .permitAll()
-                        .requestMatchers("/api/subreddit")
-                        .permitAll()
-                        .requestMatchers("/api/posts/**")
-                        .permitAll()
-                        .requestMatchers("/api/comments/**")
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                "/api/auth/**",
+                                "/api/subreddit",
+                                "/api/posts/**",
+                                "/api/comments/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

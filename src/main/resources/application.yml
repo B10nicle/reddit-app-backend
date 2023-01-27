@@ -29,7 +29,3 @@ rsa:
 jwt:
   expiration:
     time: 900000
----
-verification:
-  expiration:
-    time: 900000
