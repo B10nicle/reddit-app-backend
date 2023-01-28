@@ -45,15 +45,21 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(AbstractHttpConfigurer::disable)
+                .cors()
+                .and()
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers(
-                                "/api/auth/**",
-                                "/api/subreddit",
-                                "/api/posts/**",
-                                "/api/comments/**",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**")
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**")
+                        .permitAll()
+                        .requestMatchers("/api/subreddit")
+                        .permitAll()
+                        .requestMatchers("/api/posts/")
+                        .permitAll()
+                        .requestMatchers("/api/posts/**")
+                        .permitAll()
+                        .requestMatchers("/api/comments/**")
+                        .permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
@@ -63,7 +69,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                         .accessDeniedHandler(new BearerTokenAccessDeniedHandler()))
-                .build();
+                .httpBasic().and().build();
     }
 
     @Bean
