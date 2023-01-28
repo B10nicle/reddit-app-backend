@@ -1,6 +1,5 @@
 package com.khilkoleg.redditapp.controller;
 
-import com.khilkoleg.redditapp.model.User;
 import com.khilkoleg.redditapp.service.SubredditService;
 import org.springframework.web.bind.annotation.*;
 import com.khilkoleg.redditapp.dto.SubredditDto;
